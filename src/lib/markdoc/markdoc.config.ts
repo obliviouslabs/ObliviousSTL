@@ -1,5 +1,6 @@
 import Markdoc from "@markdoc/markdoc";
 import type { Config } from "@markdoc/markdoc";
+import { MathFormula } from "src/components/MathFormula";
 
 const { nodes, Tag } = Markdoc;
 
@@ -97,6 +98,12 @@ export const config: Config = {
         id: { type: String, required: true },
       },
       selfClosing: true,
+    },
+    mathFormula: {
+      attributes: {
+        formula: { type: String },
+      },
+      render: "MathFormula",
     },
   },
   nodes: {
