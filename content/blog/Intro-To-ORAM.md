@@ -70,8 +70,6 @@ _TODO: add some imgs here_
 
 ### Naive Design for ORAM
 
-The easiest way for designing an ORAM is to do a linear scan with every read/write access. This is easy to implement, but the read and write cost would boost from $O(1) to $O(N) given $N$ is the size of the RAM.
+The easiest way for designing an ORAM is to do a linear scan with every read/write access. This is easy to implement, but the read and write cost would boost from O(1) to O(N)  given  is the size of the RAM.
 
-{% mathFormula formula="$d_k(y) = x ≡ a^1 * (y - b) mod 26$" /%} 
-
-hhh?
+{% mathFormula formula='O(1)' inline=true /%} 
