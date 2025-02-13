@@ -27,7 +27,7 @@ The service provider, government agency, or hacker does not have direct access t
 
 **Consequences of the Leakage**
 
-🔴 Encryption is not doing anything!The entire social graph is being reconstructed even with encrypted database.
+🔴 Encryption is not doing anything! The entire social graph is being reconstructed even with encrypted database.
 
 
 
@@ -61,15 +61,45 @@ An insurance company or an external observer does not have access to the decrypt
 - If an external attacker observes that a specific kidney is being accessed repeatedly, they might infer a specific high-priority transplant case is ongoing.
 - This could lead to kidney brokers or criminals targeting the patient or hospital staff.
 
-## Oblivious RAM
-Oblivious RAM (ORAM) is the most fundamental Oblivious Algorithm – a cryptographic protocol designed to conceal access patterns during data interactions in the simplest abstraction of an array. When we’re accessing an array stored in cloud services, even when data is encrypted, the sequence of operations—such as which entries are accessed and in what order—can inadvertently expose private details. 
+## Oblivious RAM 
+Oblivious RAM (ORAM) is the most fundamental Oblivious Algorithm – a cryptographic protocol designed to conceal access patterns during data interactions in the simplest abstraction of an array. When clients are accessing an array stored in cloud services, even when data is encrypted, the sequence of operations—such as which entries are accessed and in what order—can inadvertently expose private details. 
 
-ORAM works by introducing randomized access and periodic reshuffling of data, making access patterns indistinguishable from random behavior.
+ORAM works by introducing randomized access and periodic reshuffling of data, making access patterns indistinguishable from random behavior. 
 
 _TODO: add some imgs here_
 
-### Naive Design for ORAM
+### Linear Scan - Naive Design for ORAM
 
-The easiest way for designing an ORAM is to do a linear scan with every read/write access. This is easy to implement, but the read and write cost would boost from O(1) to O(N)  given  is the size of the RAM.
+The easiest way for designing an ORAM is to do a linear scan of the entire RAM with every read/write access. This is easy to implement, but the operation cost would boost from O(1) to O(N) where N is the size of the RAM. 
 
-{% mathFormula formula='O(1)' inline=true /%} 
+### Path ORAM - A Practical Solution
+In 2012, Stefanov and Shi introduced [PathORAM](https://eprint.iacr.org/2013/280.pdf), an efficient and simple ORAM scheme that made ORAM practical.
+
+#### Core Idea
+PathORAM organizes data into a **binary tree structure** stored on an untrusted server. The client maintains **a small local stash** to temporarily store blocks during access operations. The key concept is that each data block is assigned **a random leaf node** and is always stored along the path from the root to that leaf.
+_TODO: add imgs_
+
+#### Operations
+1. **Read/Write**:
+   1. The client downloades the **entire path** from the root to the leaf associated with the requested block.
+   2. The client assigns a new random leaf to the block, and the block is modified (if the operation is write). 
+   3. All blocks downloaded are temporarily stored in the stash, along with other blocks on the path.
+2. **Eviction**:
+   1. The client writes back blocks from the stash to the tree, ensuring that blocks always remain within the correct path.
+   2. Write to the same path as the client downloades the requested block, write in the order from leaf to root 
+   3. For each node, put as many blocks as possible. (Blocks are pushed down the tree as much as possible to maintain efficient storage distribution.) 
+#### Security & Efficiency 
+- Security: Every access pattern looks identical (always fetches a full path), ensuring obliviousness.
+- Bandwidth Overhead: O(log N) per operation, significantly better than earlier schemes. 
+
+## Follow-up Works
+Since PathORAM, there has been extensive follow-up research on designing ORAM schemes with improved performance under various metrics.
+
+Additionally, numerous papers, libraries, and implementations exist for other oblivious algorithms, such as oblivious maps and oblivious sorting, many of which leverage ORAM techniques as a foundation.
+
+_TODO: is this the right statement? if so, add citations_
+
+## Conclusion
+As cloud computing becomes the backbone of modern digital infrastructure, ensuring data confidentiality goes beyond simple encryption. The examples of private contact discovery and kidney transplantation records demonstrate that access patterns can reveal highly sensitive information—even when the underlying data remains encrypted. This underscores the necessity of Oblivious Algorithms in protecting user privacy.
+
+While Path ORAM represents a practical advancement in ORAM design, the field continues to evolve, with researchers striving to improve efficiency, reduce bandwidth overhead, and extend oblivious techniques to broader applications such as secure computation and machine learning. As more organizations recognize the risks of access pattern leakage, integrating Oblivious Algorithms into cloud-based services will be essential for building truly private and secure systems.

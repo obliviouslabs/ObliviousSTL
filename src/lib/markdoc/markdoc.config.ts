@@ -1,6 +1,5 @@
 import Markdoc from "@markdoc/markdoc";
 import type { Config } from "@markdoc/markdoc";
-import { MathFormula } from "src/components/MathFormula";
 
 const { nodes, Tag } = Markdoc;
 
