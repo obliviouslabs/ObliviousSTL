@@ -19,7 +19,8 @@ After the block builders selected a set of transactions based on the gas fee, th
    2. send the 1000 DAI to the user by increamenting the user's balance in DAI in the liquiity pool by 1000
 In the above two steps, the secure enclave needs to access contract state storage, which is sotred ouside secure enclave. If all transactions are executed succesfully by the seucure enclave, it will generate attestation on the succesful execution, and block builders will be able to send the encrypted block along with the attestation to validators for proposing. 
 
-2. Explain why without ORAM will cause leak info，use uniswap contract，if don't hide，it will leak user，direction，how much money (connect the leakage with the code)；(possibly needs to explain what could be hide in flashbot's works)
+
+1. Explain why without ORAM will cause leak info，use uniswap contract，if don't hide，it will leak user，direction，how much money (connect the leakage with the code)；(possibly needs to explain what could be hide in flashbot's works)
 
 '''
 function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external lock {
@@ -52,12 +53,18 @@ function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data)
         emit Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to);
     }
 '''
-In the above architecture, a few pieces of information will be leaked. The first is in which order the user is tryig to switch: from ETH to DAI or DAI to ETH. This leakage happens in the first two if statements. If the user sends 1 DAI 
+We use a uniswap transaction from 1ETH to 1000 DAI as an example. We call this a private order flow if three pieces of information could be hidden: who is making the transaction, in which order, and in what amount. 
 
-
+In the above architecture, the amount of transaction is hidden as the transaction is encrypted, and will only be decryptetd in the secure enclave for computation. However, the remaining two will be leaked. The first is in which order the user is tryig to switch: from ETH to DAI or from DAI to ETH. This leakage happens in the first two if statements. If the user sends 1 ETH and 0 DAI to the liquidity pool and trys to exchanges from 1 ETH to 1000 DAI, when the uniswap contract calling this underlying function, only one of the two if statements will be executed. By monitoring which one is executed, the attacker would be able to know in which direction is the transaction.
+Mitigating this is not difficult. The user needs to send both non zero amount of ETH and DAI to the contract and then sign a transaction for exchange.
+A more hard to resolve problem is in balance checking (and updating) steps, although the user's address is encrypted, when the enclave is accessing contract states storage, the attacker knows which memory slot is accessed, and he could easily refer which user is doing the transaction. For example, once the transaction is included in the blockchain, it's public and attackers could link the user's address to the memory slot in contract states storage. When the same user is doing another transactions next time, the attacker knows. 
 
 
 1. what is ORAM (add benchmark), how it works, why ORAM solve this problem
+The above problem is called access pattern leakage. It happens when the same data (Alice's balance) is always stored in the same memory slot in a database. To hide the access pattern, we need oblvious algorithms. 
+(Junxi:I have another blog on Intro to ORAM, maybe can borrow some text from there)
+
+With ORAM, even when the secure enclave keeps fetching the same user's balance form contract state storage, from the perspective of an attacker, it access random memory slot each time. In this way, we hide the user who is making a exchange. 
 
 Low level detail
 1. SGX VS TDX 
