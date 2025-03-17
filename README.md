@@ -11,3 +11,4 @@ You can check out Celeste in action in [the demo site](https://nicoelayda.github
 MIT. See [LICENSE](https://github.com/nicoelayda/celeste/blob/master/LICENSE).
 
 Github: https://github.com/nicoelayda/celeste 
+
