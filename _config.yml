@@ -1,6 +1,6 @@
 title:               Celeste
 url:                 https://nicoelayda.github.io
-baseurl:             ""
+baseurl:             "/blog"
 
 markdown:            kramdown
 kramdown:
