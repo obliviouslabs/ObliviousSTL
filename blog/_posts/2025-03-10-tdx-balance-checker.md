@@ -119,15 +119,17 @@ _[D]Afonso: replace the clients with TEE, memory with contract state storage_
 By applying ORAM, all reads and writes appear randomized. Even if the secure enclave repeatedly accesses the same user balance, block builders only observe random memory accesses. This protects user identity while maintaining secure computations.
 
 ### Benchmark
-For a long time, there has been a misconception that ORAM is impractically slow, and that trading performance for marginal privacy gains is unjustified. Our benchmarks below challenge this assumption. Testing was conducted in SGX prerelease mode using an Intel(R) Xeon(R) Platinum 8352S processor (48M Cache, 2.20 GHz). We constrained the enclave size to 64 GB, with excess data swapped to SSD storage.
+Again, we continue with the **1 WETH → 1000 USDT Uniswap swap** example. We're going to evaluate the latency of doing ORAM access to contract state storage. This latency depends on the size of keys and values (in Ethereum storage, each one is 32 bytes) and the size of the database (which depends on the number of accounts holding the token).
+
+Testing was conducted in SGX prerelease mode using an Intel(R) Xeon(R) Platinum 8352S processor (48M Cache, 2.20 GHz). We constrained the enclave size to 64 GB, with excess data swapped to SSD storage.
 
 ![Architecture](/assets/tdx-balance-checker/Latency1.jpg)
 
 The figure above compares the latency of individual ORAM operations during **sequential** access across different implementations, including MobileCoin and Oblix. The x-axis represents the number of key-value pairs (indicating total data entries stored in memory), while the y-axis displays latency in microseconds (µs). In the context of our USDT/WETH pair analysis, USDT has approximately 7 million active token holders, while WETH has 1.2 million. We constructed separate ORAM databases for each token, mapping account addresses to balances. With databases containing 7 million and 1.2 million key-value pairs respectively, lookups can be executed in just 10 microseconds.
 
-![Architecture](/assets/tdx-balance-checker/Latency1000.jpg)
+The throughput here would be around 100,000 access per second. If we need higher throughput, we could do batch processing which groups 1000 or 10,000 ORAM accsses together, reducing total computation but increasing latency. The second figure below demonstrates performance under **batch processing** conditions, where we executed 1,000 lookups per batch. This approach increased latency to 5 milliseconds for 1,000 operations, but it increased the throughput to around 200,000 on a database containing 10 million key-value pairs.
 
-The second figure demonstrates performance under **batch processing** conditions, where we executed 1,000 lookups per batch. This approach reduced latency to 5 milliseconds for 1,000 operations, averaging 5 microseconds per lookup—even when operating on a database containing 10 million key-value pairs.
+![Architecture](/assets/tdx-balance-checker/Latency1000.jpg)
 
 _[D]Junxi: check with Afonso on the benchmark for private exchange_
 _[D]Afonso: just put ORAM benchmark here, graph is in repo_
