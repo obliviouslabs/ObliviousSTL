@@ -29,8 +29,18 @@ plugins:
   - jekyll-coffeescript
   - jekyll-paginate
   - jekyll-gist
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
 
 collections:
   projects:
     output: true
     permalink: /projects/:title/
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
