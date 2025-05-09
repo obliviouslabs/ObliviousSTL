@@ -1,5 +1,5 @@
-title:               Celeste
-url:                 https://nicoelayda.github.io
+title:               ObliviousSTL
+url:                 https://obliviouslabs.github.io
 baseurl:             ""
 
 markdown:            kramdown
@@ -37,6 +37,9 @@ collections:
   projects:
     output: true
     permalink: /projects/:title/
+  papers:
+    output: true
+    permalink: /papers/:title/
 
 defaults:
   -

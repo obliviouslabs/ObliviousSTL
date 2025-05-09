@@ -1,0 +1,13 @@
+---
+layout: default
+title: "Papers"
+permalink: /papers/
+---
+<h1>Papers</h1>
+
+{% for paper in site.papers %}
+  <article>
+    <h2><a href="{{ paper.url | relative_url }}">{{ paper.title }}</a></h2>
+    <p>{{ paper.excerpt }}</p>
+  </article>
+{% endfor %}

@@ -4,19 +4,25 @@ title: About
 ---
 
 <p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
+  Welcome to the Oblivious Standard Library, an open-source consortium dedicated to advancing the field of oblivious algorithms.
 </p>
 
-Celeste is a lightweight Jekyll theme that features a minimalist, content-first design. It places your content center stage and lets your readers view them in a clutter-free environment without visual distractions. It is based on [Poole](https://github.com/poole/poole), the Jekyll butler, by [@mdo](https://twitter.com/mdo).
+<p>
+  Our community brings together engineers, researchers, and enthusiasts who are passionate about developing and sharing resources related to oblivious algorithms.
+</p>
 
-In addition to using Poole as its foundation, Celeste is also built using the following open-source projects:
+<p>
+  We encourage collaboration and innovation, providing a platform for contributors to share their work and learn from each other.
+</p>
 
-* [normalize.css](http://necolas.github.io/normalize.css/), a modern, HTML5-ready alternative to CSS resets.
-* [Font Awesome](https://fontawesome.com/v4.7.0/), the iconic font and CSS toolkit.
-* [Hover.css](http://ianlunn.github.io/Hover/), a collection of CSS3 powered hover effects.
+<p>
+  Additionally, we host a variety of blogs where you can find insightful blog posts and real-world use cases for oblivious algorithms.
+</p>
 
-Celeste is <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> by [@nicoelayda](https://github.com/nicoelayda). Learn more and contribute on [GitHub](https://github.com/nicoelayda/celeste).
+<p>
+  Our projects section features various open-source projects focused on implementing and advancing oblivious algorithms.
+</p>
 
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/nicoelayda/celeste/issues/new) or [ask me on Twitter](https://twitter.com/nicoelayda).
-
-Thanks for reading!
+<p>
+  For more information, contributions, or to get involved, visit our GitHub repository or reach out to us on our community channels.
+</p>
